@@ -23,16 +23,19 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Book book1 = new Book("Domain Driven Design", "123", "RandomMouse");
-        Book savedBook1 = bookRepository.save(book1);
+        if (bookRepository.count() == 0) {
+            Book book1 = new Book("Domain Driven Design", "123", "RandomMouse");
+            Book savedBook1 = bookRepository.save(book1);
+            Book book2 = new Book("Spring In Action", "456", "ORiley");
+            Book savedBook2 = bookRepository.save(book2);
+            logger.info(savedBook1.getId().toString());
+            logger.info(savedBook2.getId().toString());
 
-        Book book2 = new Book("Spring In Action", "456", "ORiley");
-        Book savedBook2 = bookRepository.save(book2);
-
-        logger.info(savedBook1.getId().toString());
-        logger.info(savedBook2.getId().toString());
+        }
 
         bookRepository.findAll().forEach(book -> logger.info(book.toString()));
+
+
     }
 
 }
