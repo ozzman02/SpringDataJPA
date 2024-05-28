@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+//@Profile({"local, default"})
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -22,20 +24,14 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        if (bookRepository.count() == 0) {
-            Book book1 = new Book("Domain Driven Design", "123", "RandomMouse");
-            Book savedBook1 = bookRepository.save(book1);
-            Book book2 = new Book("Spring In Action", "456", "ORiley");
-            Book savedBook2 = bookRepository.save(book2);
-            logger.info(savedBook1.getId().toString());
-            logger.info(savedBook2.getId().toString());
-
-        }
-
+        bookRepository.deleteAll();
+        Book book1 = new Book("Domain Driven Design", "123", "RandomMouse", null);
+        Book savedBook1 = bookRepository.save(book1);
+        Book book2 = new Book("Spring In Action", "456", "ORiley", null);
+        Book savedBook2 = bookRepository.save(book2);
+        logger.info(savedBook1.getId().toString());
+        logger.info(savedBook2.getId().toString());
         bookRepository.findAll().forEach(book -> logger.info(book.toString()));
-
-
     }
 
 }

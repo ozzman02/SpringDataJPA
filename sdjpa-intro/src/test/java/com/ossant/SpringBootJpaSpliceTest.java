@@ -10,6 +10,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.Commit;
@@ -27,9 +28,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
 @ComponentScan(basePackages = {"com.ossant.bootstrap"})
-public class SpringBootJpaTestSpliceIT {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class SpringBootJpaSpliceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpringBootJpaTestSpliceIT.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpringBootJpaSpliceTest.class);
 
     @Autowired
     private BookRepository bookRepository;
@@ -41,7 +43,7 @@ public class SpringBootJpaTestSpliceIT {
         long countBefore = bookRepository.count();
         assertThat(countBefore).isEqualTo(2);
         logger.info("Count Before: {}", countBefore);
-        bookRepository.save(new Book("MyBook", "123456", "Self"));
+        bookRepository.save(new Book("MyBook", "123456", "Self", null));
         long countAfter = bookRepository.count();
         logger.info("Count After: {}", countAfter);
         assertThat(countBefore).isLessThan(countAfter);
@@ -51,6 +53,6 @@ public class SpringBootJpaTestSpliceIT {
     @Test
     void testJpaSpliceTransaction() {
         long countBefore = bookRepository.count();
-        assertThat(countBefore).isEqualTo(3);
+        assertThat(countBefore).isEqualTo(2);
     }
 }
