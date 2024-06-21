@@ -10,12 +10,6 @@ import java.sql.*;
 @Component
 public class AuthorDaoImpl implements AuthorDao {
 
-    private static final String GET_AUTHOR_BY_NAME_QUERY = """
-                SELECT * FROM author WHERE FIRST_NAME = ? AND LAST_NAME = ?
-                """;
-
-    private static final String GET_AUTHOR_BY_ID_QUERY = "SELECT * FROM author where id = ?";
-
     private final DataSource dataSource;
 
     public AuthorDaoImpl(DataSource dataSource) {
@@ -24,76 +18,86 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author getById(Long id) {
-        Connection connection = null;
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(GET_AUTHOR_BY_ID_QUERY);
-            preparedStatement.setLong(1, id);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                Author author = new Author();
-                author.setId(id);
-                author.setFirstName(resultSet.getString("first_name"));
-                author.setFirstName(resultSet.getString("last_name"));
-                return author;
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(GET_AUTHOR_BY_ID_QUERY)) {
+            ps.setLong(1, id);
+            try (ResultSet resultSet = ps.executeQuery()) {
+                if (resultSet.next()) {
+                    return getAuthor(resultSet);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }
 
     @Override
-    public Author getAuthorByName(String firstName, String lastName) {
-        Connection connection = null;
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(GET_AUTHOR_BY_NAME_QUERY);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                Author author = new Author();
-                author.setId(resultSet.getLong("id"));
-                author.setFirstName(resultSet.getString("first_name"));
-                author.setFirstName(resultSet.getString("last_name"));
-                return author;
+    public Author getByName(String firstName, String lastName) {
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(GET_AUTHOR_BY_NAME_QUERY)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            try (ResultSet resultSet = ps.executeQuery()) {
+                if (resultSet.next()) {
+                    return getAuthor(resultSet);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return null;
+    }
+
+    @Override
+    public Author save(Author author) {
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SAVE_AUTHOR_QUERY)) {
+            ps.setString(1, author.getFirstName());
+            ps.setString(2, author.getLastName());
+            ps.execute();
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(GET_LAST_INSERT_ID)) {
+                if (resultSet.next()) {
+                    Long savedId = resultSet.getLong(1);
+                    return this.getById(savedId);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Author update(Author author) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement ps = connection.prepareStatement(UPDATE_AUTHOR_QUERY)) {
+            ps.setString(1, author.getFirstName());
+            ps.setString(2, author.getLastName());
+            ps.setLong(3, author.getId());
+            ps.execute();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return this.getById(author.getId());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement ps = connection.prepareStatement(DELETE_AUTHOR_QUERY)) {
+            ps.setLong(1, id);
+            ps.execute();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private Author getAuthor(ResultSet resultSet) throws SQLException {
+        return new Author(resultSet.getLong("id"),
+                resultSet.getString("first_name"),
+                resultSet.getString("last_name")
+        );
     }
 }

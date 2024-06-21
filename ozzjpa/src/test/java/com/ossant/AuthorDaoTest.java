@@ -37,9 +37,34 @@ public class AuthorDaoTest {
     }
 
     @Test
-    void getAuthorByFirstNameTest() {
-        Author author = authorDao.getAuthorByName("Craig","Walls");
+    void getByNameTest() {
+        Author author = authorDao.getByName("Craig","Walls");
         assertThat(author).isNotNull();
     }
+
+    @Test
+    void saveAuthorTest(){
+        Author author = new Author("Oscar", "Santamaria");
+        Author saved = authorDao.save(author);
+        assertThat(saved).isNotNull();
+    }
+
+    @Test
+    void updateAuthorTest() {
+        Author author = new Author("Grace", "Venegas");
+        Author saved = authorDao.save(author);
+        saved.setFirstName("Patricia");
+        Author updated = authorDao.update(saved);
+        assertThat(updated.getFirstName()).isEqualTo("Patricia");
+    }
+
+    @Test
+    void deleteAuthorTest() {
+        Author author = new Author("Sergio", "Santamaria");
+        Author saved = authorDao.save(author);
+        authorDao.deleteById(saved.getId());
+        assertThat(authorDao.getById(saved.getId())).isNull();
+    }
+
 
 }
