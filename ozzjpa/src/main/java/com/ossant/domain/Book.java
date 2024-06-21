@@ -1,9 +1,6 @@
 package com.ossant.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -17,21 +14,23 @@ public class Book {
     private String title;
     private String isbn;
     private String publisher;
-    private Long authorId;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author authorId;
 
     public Book() {
-
     }
 
-    public Book(String title, String isbn, String publisher, Long authorId) {
+    public Book(Long id, String title, String isbn, String publisher, Author authorId) {
+        this.id = id;
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
         this.authorId = authorId;
     }
 
-    public Book(Long id, String title, String isbn, String publisher, Long authorId) {
-        this.id = id;
+    public Book(String title, String isbn, String publisher, Author authorId) {
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
@@ -70,11 +69,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Long getAuthorId() {
+    public Author getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthorId(Author authorId) {
         this.authorId = authorId;
     }
 
@@ -84,13 +83,16 @@ public class Book {
         if (o == null || getClass() != o.getClass()) return false;
 
         Book book = (Book) o;
-
-        return Objects.equals(id, book.id);
+        return Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(isbn, book.isbn) && Objects.equals(publisher, book.publisher) && Objects.equals(authorId, book.authorId);
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(title);
+        result = 31 * result + Objects.hashCode(isbn);
+        result = 31 * result + Objects.hashCode(publisher);
+        result = 31 * result + Objects.hashCode(authorId);
+        return result;
     }
-
 }

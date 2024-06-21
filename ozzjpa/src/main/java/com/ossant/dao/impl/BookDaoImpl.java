@@ -1,5 +1,6 @@
 package com.ossant.dao.impl;
 
+import com.ossant.dao.AuthorDao;
 import com.ossant.dao.BookDao;
 import com.ossant.domain.Book;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class BookDaoImpl implements BookDao {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private AuthorDao authorDao;
 
     @Override
     public Book getById(Long id) {
@@ -53,7 +57,11 @@ public class BookDaoImpl implements BookDao {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getIsbn());
             ps.setString(3, book.getPublisher());
-            ps.setLong(4, book.getAuthorId());
+
+            if (book.getAuthorId() != null) {
+                ps.setLong(4, book.getAuthorId().getId());
+            }
+
             ps.execute();
             try (Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(GET_LAST_INSERT_ID)) {
@@ -74,7 +82,11 @@ public class BookDaoImpl implements BookDao {
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getIsbn());
             ps.setString(3, book.getPublisher());
-            ps.setLong(4, book.getAuthorId());
+
+            if (book.getAuthorId() != null) {
+                ps.setLong(4, book.getAuthorId().getId());
+            }
+
             ps.setLong(5, book.getId());
             ps.execute();
         } catch (SQLException ex) {
@@ -100,7 +112,7 @@ public class BookDaoImpl implements BookDao {
                 resultSet.getString("title"),
                 resultSet.getString("isbn"),
                 resultSet.getString("publisher"),
-                resultSet.getLong("author_id")
+                authorDao.getById(resultSet.getLong("author_id"))
         );
     }
 }

@@ -1,6 +1,8 @@
 package com.ossant;
 
+import com.ossant.dao.AuthorDao;
 import com.ossant.dao.BookDao;
+import com.ossant.dao.impl.AuthorDaoImpl;
 import com.ossant.dao.impl.BookDaoImpl;
 import com.ossant.domain.Book;
 import org.junit.jupiter.api.Test;
@@ -13,11 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(BookDaoImpl.class)
+@Import({BookDaoImpl.class, AuthorDaoImpl.class})
 public class BookDaoTest {
 
     @Autowired
     private BookDao bookDao;
+
+    @Autowired
+    private AuthorDao authorDao;
 
     @Test
     void getBookByIdTest() {
@@ -31,15 +36,16 @@ public class BookDaoTest {
 
     @Test
     void saveBookTest() {
+
         Book book = new Book("Domain Driven Design Reference",
-                "978-0321125300", "Addison Wesley", 2L);
+                "978-0321125300", "Addison Wesley", authorDao.getById(2L));
         assertThat(bookDao.save(book)).isNotNull();
     }
 
     @Test
     void updateBookTest() {
         Book book = new Book("Functional Design: Principles, Patterns, and Practices",
-                "978-0321125400", "Addison Wesley", 3L);
+                "978-0321125400", "Addison Wesley", authorDao.getById(3L));
         Book saved = bookDao.save(book);
         assertThat(saved).isNotNull();
         Book existingBook = bookDao.getById(saved.getId());
@@ -51,7 +57,7 @@ public class BookDaoTest {
     @Test
     void deleteBookByIdTest() {
         Book book = new Book("Test, Test, and Test",
-                "978-0321125400-test", "Test Publisher", 3L);
+                "978-0321125400-test", "Test Publisher", authorDao.getById(3L));
         Book saved = bookDao.save(book);
         bookDao.deleteById(saved.getId());
         assertThat(bookDao.getById(saved.getId())).isNull();
