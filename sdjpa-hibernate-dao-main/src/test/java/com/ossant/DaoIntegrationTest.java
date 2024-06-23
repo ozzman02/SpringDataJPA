@@ -1,152 +1,118 @@
 package com.ossant;
 
 import com.ossant.dao.AuthorDao;
-import com.ossant.dao.AuthorDaoImpl;
+import com.ossant.dao.BookDao;
+import com.ossant.dao.impl.AuthorDaoImpl;
+import com.ossant.dao.impl.BookDaoImpl;
 import com.ossant.domain.Author;
+import com.ossant.domain.Book;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by jt on 8/28/21.
- */
-@ActiveProfiles("local")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
-@Import(AuthorDaoImpl.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({AuthorDaoImpl.class, BookDaoImpl.class})
 public class DaoIntegrationTest {
+
     @Autowired
-    AuthorDao authorDao;
+    private AuthorDao authorDao;
 
-//    @Autowired
-//    BookDao bookDao;
-//
-//    @Test
-//    void testDeleteBook() {
-//        Book book = new Book();
-//        book.setIsbn("1234");
-//        book.setPublisher("Self");
-//        book.setTitle("my book");
-//        Book saved = bookDao.saveNewBook(book);
-//
-//        bookDao.deleteBookById(saved.getId());
-//
-//        Book deleted = bookDao.getById(saved.getId());
-//
-//        assertThat(deleted).isNull();
-//    }
-//
-//    @Test
-//    void updateBookTest() {
-//        Book book = new Book();
-//        book.setIsbn("1234");
-//        book.setPublisher("Self");
-//        book.setTitle("my book");
-//
-//        Author author = new Author();
-//        author.setId(3L);
-//
-//        book.setAuthor(author);
-//        Book saved = bookDao.saveNewBook(book);
-//
-//        saved.setTitle("New Book");
-//        bookDao.updateBook(saved);
-//
-//        Book fetched = bookDao.getById(saved.getId());
-//
-//        assertThat(fetched.getTitle()).isEqualTo("New Book");
-//    }
-//
-//    @Test
-//    void testSaveBook() {
-//        Book book = new Book();
-//        book.setIsbn("1234");
-//        book.setPublisher("Self");
-//        book.setTitle("my book");
-//
-//        Author author = new Author();
-//        author.setId(3L);
-//
-//        book.setAuthor(author);
-//        Book saved = bookDao.saveNewBook(book);
-//
-//        assertThat(saved).isNotNull();
-//    }
-//
-//    @Test
-//    void testGetBookByName() {
-//        Book book = bookDao.findBookByTitle("Clean Code");
-//
-//        assertThat(book).isNotNull();
-//    }
-//
-//    @Test
-//    void testGetBook() {
-//        Book book = bookDao.getById(3L);
-//
-//        assertThat(book.getId()).isNotNull();
-//    }
+    @Autowired
+    private BookDao bookDao;
 
+    @Order(1)
     @Test
-    void testDeleteAuthor() {
-        Author author = new Author();
-        author.setFirstName("john");
-        author.setLastName("t");
-
-        Author saved = authorDao.saveNewAuthor(author);
-
-        authorDao.deleteAuthorById(saved.getId());
-
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            Author deleted = authorDao.getById(saved.getId());
-        });
-
-    }
-
-    @Test
-    void testUpdateAuthor() {
-        Author author = new Author();
-        author.setFirstName("john");
-        author.setLastName("t");
-
-        Author saved = authorDao.saveNewAuthor(author);
-
-        saved.setLastName("Thompson");
-        Author updated = authorDao.updateAuthor(saved);
-
-        assertThat(updated.getLastName()).isEqualTo("Thompson");
-    }
-
-    @Test
-    void testSaveAuthor() {
-        Author author = new Author();
-        author.setFirstName("John");
-        author.setLastName("Thompson");
-        Author saved = authorDao.saveNewAuthor(author);
-
-        assertThat(saved).isNotNull();
-    }
-
-    @Test
-    void testGetAuthorByName() {
-        Author author = authorDao.findAuthorByName("Craig", "Walls");
-
-        assertThat(author).isNotNull();
-    }
-
-    @Test
-    void testGetAuthor() {
-
+    void getAuthorByIdTest() {
         Author author = authorDao.getById(1L);
-
         assertThat(author).isNotNull();
-
     }
+
+    @Order(2)
+    @Test
+    void getAuthorByNameTest() {
+        Author author = authorDao.getByName("Craig","Walls");
+        assertThat(author).isNotNull();
+    }
+
+    @Order(3)
+    @Test
+    void saveAuthorTest(){
+        Author author = new Author("Oscar", "Santamaria");
+        Author saved = authorDao.save(author);
+        assertThat(saved).isNotNull();
+        assertThat(saved.getId()).isNotNull();
+    }
+
+    @Order(4)
+    @Test
+    void updateAuthorTest() {
+        Author author = new Author("Grace", "Venegas");
+        Author saved = authorDao.save(author);
+        saved.setFirstName("Patricia");
+        Author updated = authorDao.update(saved);
+        assertThat(updated.getFirstName()).isEqualTo("Patricia");
+    }
+
+    @Order(5)
+    @Test
+    void deleteAuthorTest() {
+        Author author = new Author("Sergio", "Santamaria");
+        Author saved = authorDao.save(author);
+        authorDao.deleteById(saved.getId());
+        assertThat(authorDao.getById(saved.getId())).isNull();
+    }
+
+    @Order(6)
+    @Test
+    void getBookByIdTest() {
+        assertThat(bookDao.getById(1L)).isNotNull();
+    }
+
+    @Order(7)
+    @Test
+    void getBookByTitle() {
+        assertThat(bookDao.getByTitle("Spring in Action, 5th Edition")).isNotNull();
+    }
+
+    @Order(8)
+    @Test
+    void saveBookTest() {
+
+        Book book = new Book("Domain Driven Design Reference",
+                "978-0321125300", "Addison Wesley", 2L);
+        assertThat(bookDao.save(book)).isNotNull();
+    }
+
+    @Order(9)
+    @Test
+    void updateBookTest() {
+        Book book = new Book("Functional Design: Principles, Patterns, and Practices",
+                "978-0321125400", "Addison Wesley", 3L);
+        Book saved = bookDao.save(book);
+        assertThat(saved).isNotNull();
+        Book existingBook = bookDao.getById(saved.getId());
+        existingBook.setIsbn("978-0321125600");
+        Book updated = bookDao.update(existingBook);
+        assertThat(updated.getIsbn()).isEqualTo("978-0321125600");
+    }
+
+    @Order(10)
+    @Test
+    void deleteBookByIdTest() {
+        Book book = new Book("Test, Test, and Test",
+                "978-0321125400-test", "Test Publisher", 3L);
+        Book saved = bookDao.save(book);
+        bookDao.deleteById(saved.getId());
+        assertThat(bookDao.getById(saved.getId())).isNull();
+    }
+
 }

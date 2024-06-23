@@ -2,17 +2,21 @@ package com.ossant.dao;
 
 import com.ossant.domain.Author;
 
-/**
- * Created by jt on 8/22/21.
- */
+
 public interface AuthorDao {
+
+    String GET_AUTHOR_BY_NAME_QUERY = """
+            SELECT a FROM Author a WHERE a.firstName = :first_name AND a.lastName = :last_name
+            """;
+
     Author getById(Long id);
 
-    Author findAuthorByName(String firstName, String lastName);
+    Author getByName(String firstName, String lastName);
 
-    Author saveNewAuthor(Author author);
+    Author save(Author author);
 
-    Author updateAuthor(Author author);
+    Author update(Author author);
 
-    void deleteAuthorById(Long id);
+    void deleteById(Long id);
+
 }

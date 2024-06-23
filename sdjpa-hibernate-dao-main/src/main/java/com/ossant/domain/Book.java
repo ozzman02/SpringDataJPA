@@ -30,6 +30,13 @@ public class Book {
         this.publisher = publisher;
     }
 
+    public Book(String title, String isbn, String publisher, Long authorId) {
+        this.title = title;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.authorId = authorId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
