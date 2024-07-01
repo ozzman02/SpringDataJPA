@@ -4,8 +4,12 @@ import com.ossant.dao.BookDao;
 import com.ossant.domain.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class BookDaoImpl implements BookDao {
@@ -25,13 +29,22 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public Book findByISBN(String isbn) {
+        try (EntityManager entityManager = getEntityManager()) {
+            TypedQuery<Book> query = entityManager.createQuery(GET_BOOK_BY_ISBN_QUERY, Book.class);
+            query.setParameter("isbn", isbn);
+            return query.getSingleResult();
+        }
+    }
+
+    @Override
     public Book getByTitle(String title) {
-        EntityManager entityManager = getEntityManager();
-        TypedQuery<Book> query = entityManager.createQuery(GET_BOOK_BY_TITLE_QUERY, Book.class);
-        query.setParameter("title", title);
-        Book book = query.getSingleResult();
-        entityManager.close();
-        return book;
+        try (EntityManager entityManager = getEntityManager()) {
+            TypedQuery<Book> query =
+                    entityManager.createNamedQuery(FIND_BOOK_BY_TITLE_QUERY_NAME, Book.class);
+            query.setParameter("title", title);
+            return query.getSingleResult();
+        }
     }
 
     @Override
@@ -66,6 +79,51 @@ public class BookDaoImpl implements BookDao {
         entityManager.flush();
         entityManager.getTransaction().commit();
         entityManager.close();
+    }
+
+    @Override
+    public List<Book> findAll() {
+        try (EntityManager entityManager = getEntityManager()) {
+            TypedQuery<Book> query =
+                    entityManager.createNamedQuery(FIND_ALL_BOOKS_QUERY_NAME, Book.class);
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public Book findBookByTitleCriteria(String title) {
+        try (EntityManager entityManager = getEntityManager()) {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+            CriteriaQuery<Book> criteriaQuery =
+                    criteriaBuilder.createQuery(Book.class);
+
+            Root<Book> root = criteriaQuery.from(Book.class);
+
+            ParameterExpression<String> titleParam =
+                    criteriaBuilder.parameter(String.class);
+
+            Predicate titlePredicate =
+                    criteriaBuilder.equal(root.get("title"), titleParam);
+
+            criteriaQuery.select(root)
+                    .where(criteriaBuilder.and(titlePredicate));
+
+            TypedQuery<Book> query = entityManager.createQuery(criteriaQuery);
+            query.setParameter(titleParam, title);
+
+            return query.getSingleResult();
+        }
+    }
+
+    @Override
+    public Book findBookByTitleNative(String title) {
+        try (EntityManager entityManager = getEntityManager()) {
+            Query query = entityManager
+                    .createNativeQuery(FIND_BOOK_BY_TITLE_NATIVE_QUERY, Book.class);
+            query.setParameter("title", title);
+            return (Book) query.getSingleResult();
+        }
     }
 
     private EntityManager getEntityManager() {

@@ -1,10 +1,13 @@
 package com.ossant.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import static com.ossant.dao.AuthorDao.*;
+
+@NamedQueries({
+        @NamedQuery(name = FIND_ALL_AUTHORS_QUERY_NAME, query = FIND_ALL_AUTHORS_QUERY),
+        @NamedQuery(name = FIND_AUTHOR_BY_NAME_QUERY_NAME, query = FIND_AUTHOR_BY_NAME_QUERY)
+})
 @Entity
 public class Author {
 

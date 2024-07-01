@@ -1,13 +1,16 @@
 package com.ossant.domain;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
+import static com.ossant.dao.BookDao.*;
+
+@NamedQueries({
+        @NamedQuery(name = FIND_ALL_BOOKS_QUERY_NAME, query = FIND_ALL_BOOKS_QUERY),
+        @NamedQuery(name = FIND_BOOK_BY_TITLE_QUERY_NAME, query = FIND_BOOK_BY_TITLE_QUERY)
+})
 @Entity
 public class Book {
 

@@ -6,6 +6,7 @@ import com.ossant.dao.impl.AuthorDaoImpl;
 import com.ossant.dao.impl.BookDaoImpl;
 import com.ossant.domain.Author;
 import com.ossant.domain.Book;
+import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,26 +76,55 @@ public class DaoIntegrationTest {
 
     @Order(6)
     @Test
+    void testListAuthorsByLastNameLike() {
+        List<Author> authors = authorDao.listAuthorsByLastNameLike("Wall");
+        assertThat(authors).isNotNull();
+        assertThat(authors.size()).isGreaterThan(0);
+    }
+
+    @Order(7)
+    @Test
+    void findAllAuthorsTest() {
+        List<Author> authors = authorDao.findAll();
+        assertThat(authors).isNotNull();
+        assertThat(authors.size()).isGreaterThan(0);
+    }
+
+    @Order(8)
+    @Test
+    void getAuthorByNameCriteria() {
+        Author author = authorDao.findAuthorByNameCriteria("Craig", "Walls");
+        assertThat(author).isNotNull();
+    }
+
+    @Order(9)
+    @Test
+    void getAuthorByNameNative() {
+        Author author = authorDao.findAuthorByNameNative("Craig", "Walls");
+        assertThat(author).isNotNull();
+    }
+
+    @Order(10)
+    @Test
     void getBookByIdTest() {
         assertThat(bookDao.getById(1L)).isNotNull();
     }
 
-    @Order(7)
+    @Order(11)
     @Test
     void getBookByTitle() {
         assertThat(bookDao.getByTitle("Spring in Action, 5th Edition")).isNotNull();
     }
 
-    @Order(8)
+    @Order(12)
     @Test
     void saveBookTest() {
-
         Book book = new Book("Domain Driven Design Reference",
                 "978-0321125300", "Addison Wesley", 2L);
         assertThat(bookDao.save(book)).isNotNull();
     }
 
-    @Order(9)
+    @Order(13)
     @Test
     void updateBookTest() {
         Book book = new Book("Functional Design: Principles, Patterns, and Practices",
@@ -105,7 +137,7 @@ public class DaoIntegrationTest {
         assertThat(updated.getIsbn()).isEqualTo("978-0321125600");
     }
 
-    @Order(10)
+    @Order(14)
     @Test
     void deleteBookByIdTest() {
         Book book = new Book("Test, Test, and Test",
@@ -113,6 +145,39 @@ public class DaoIntegrationTest {
         Book saved = bookDao.save(book);
         bookDao.deleteById(saved.getId());
         assertThat(bookDao.getById(saved.getId())).isNull();
+    }
+
+    @Order(15)
+    @Test
+    void findBookByISBNTest() {
+        Book book = new Book();
+        book.setIsbn("12345" + RandomString.make());
+        book.setTitle("isbn test");
+        Book saved = bookDao.save(book);
+        Book fetched = bookDao.findByISBN(book.getIsbn());
+        assertThat(fetched).isNotNull();
+    }
+
+    @Order(16)
+    @Test
+    void findAllBooksTest() {
+        List<Book> books = bookDao.findAll();
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isGreaterThan(0);
+    }
+
+    @Order(17)
+    @Test
+    void findBookByTitleCriteria() {
+        assertThat(bookDao.findBookByTitleCriteria("Spring in Action, 5th Edition"))
+                .isNotNull();
+    }
+
+    @Order(18)
+    @Test
+    void findBookByTitleNative() {
+        assertThat(bookDao.findBookByTitleNative("Spring in Action, 5th Edition"))
+                .isNotNull();
     }
 
 }
