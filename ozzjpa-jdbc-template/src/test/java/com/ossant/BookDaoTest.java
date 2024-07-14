@@ -1,8 +1,6 @@
 package com.ossant;
 
-import com.ossant.dao.AuthorDao;
 import com.ossant.dao.BookDao;
-import com.ossant.dao.impl.AuthorDaoImpl;
 import com.ossant.dao.impl.BookDaoImpl;
 import com.ossant.domain.Book;
 import org.junit.jupiter.api.Test;

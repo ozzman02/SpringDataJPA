@@ -3,8 +3,11 @@ package com.ossant.dao;
 import com.ossant.domain.Book;
 import com.ossant.repositories.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class BookDaoImpl implements BookDao {
@@ -46,4 +49,25 @@ public class BookDaoImpl implements BookDao {
     public Book findBookByTitle(String title) {
         return bookRepository.findByTitle(title).orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public List<Book> findAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Book> findAllBooks(int pageSize, int offset) {
+        return List.of();
+    }
+
+    @Override
+    public List<Book> findAllBooks(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public List<Book> findAllBooksSortByTitle(Pageable pageable) {
+        return List.of();
+    }
+
 }

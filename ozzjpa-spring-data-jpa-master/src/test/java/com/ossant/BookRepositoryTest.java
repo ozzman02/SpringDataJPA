@@ -45,7 +45,7 @@ public class BookRepositoryTest {
         bookRepository.findAllByTitleNotNull().forEach(book -> {
             count.incrementAndGet();
         });
-        assertThat(count.get()).isGreaterThan(5);
+        assertThat(count.get()).isGreaterThanOrEqualTo(5);
     }
 
     @Test

@@ -3,8 +3,11 @@ package com.ossant.dao;
 import com.ossant.domain.Author;
 import com.ossant.repositories.AuthorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Component
@@ -45,6 +48,11 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public void deleteAuthorById(Long id) {
         authorRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Author> findAllByLastNameSortByFirstName(String lastName, Pageable pageable) {
+        return List.of();
     }
 
 }
