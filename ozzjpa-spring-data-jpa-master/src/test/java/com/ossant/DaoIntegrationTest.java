@@ -1,9 +1,9 @@
 package com.ossant;
 
 import com.ossant.dao.AuthorDao;
-import com.ossant.dao.AuthorDaoImpl;
+import com.ossant.dao.jpa.AuthorDaoImpl;
 import com.ossant.dao.BookDao;
-import com.ossant.dao.BookDaoImpl;
+import com.ossant.dao.jpa.BookDaoImpl;
 import com.ossant.domain.Author;
 import com.ossant.domain.Book;
 import jakarta.persistence.EntityNotFoundException;

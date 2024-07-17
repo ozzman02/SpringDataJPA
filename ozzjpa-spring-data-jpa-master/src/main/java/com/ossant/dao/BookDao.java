@@ -9,11 +9,15 @@ public interface BookDao {
 
     String FIND_ALL_BOOKS_QUERY = "SELECT * FROM book";
 
+    String GET_ALL_BOOKS = "SELECT b FROM Book b";
+
     String FIND_ALL_BOOKS_PAGINATED_QUERY = "SELECT * FROM book limit ? offset ?";
 
     String GET_BOOK_BY_ID_QUERY = "SELECT * FROM book WHERE id = ?";
 
     String GET_BOOK_BY_TITLE_QUERY = "SELECT * FROM book WHERE title = ?";
+
+    String FIND_BOOK_BY_TITLE_NATIVE_QUERY = "SELECT * FROM book b WHERE b.title = :title";
 
     String SAVE_BOOK_QUERY = "INSERT INTO book (title, isbn, publisher, author_id) VALUES (?, ?, ?, ?)";
 

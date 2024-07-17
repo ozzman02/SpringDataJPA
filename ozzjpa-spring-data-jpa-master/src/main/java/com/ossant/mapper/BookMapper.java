@@ -1,4 +1,4 @@
-package com.ossant.dao;
+package com.ossant.mapper;
 
 import com.ossant.domain.Book;
 import org.springframework.jdbc.core.RowMapper;

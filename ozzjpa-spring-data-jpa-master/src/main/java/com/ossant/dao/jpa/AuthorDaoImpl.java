@@ -1,5 +1,6 @@
-package com.ossant.dao;
+package com.ossant.dao.jpa;
 
+import com.ossant.dao.AuthorDao;
 import com.ossant.domain.Author;
 import com.ossant.repositories.AuthorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -52,7 +53,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public List<Author> findAllByLastNameSortByFirstName(String lastName, Pageable pageable) {
-        return List.of();
+        return authorRepository.findAuthorByLastName(lastName, pageable).getContent();
     }
 
 }

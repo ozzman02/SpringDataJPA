@@ -1,5 +1,7 @@
-package com.ossant.dao;
+package com.ossant.dao.jdbc;
 
+import com.ossant.dao.AuthorDao;
+import com.ossant.mapper.AuthorMapper;
 import com.ossant.domain.Author;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;

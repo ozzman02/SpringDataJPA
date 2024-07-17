@@ -1,5 +1,6 @@
-package com.ossant.dao;
+package com.ossant.dao.jdbc;
 
+import com.ossant.dao.AuthorDao;
 import com.ossant.domain.Author;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ComponentScan(basePackages = {"com.ossant.dao"})
+@ComponentScan(basePackages = {"com.ossant.dao.jdbc"})
 public class AuthorDaoJDBCTemplateTest {
 
     @Autowired

@@ -1,5 +1,6 @@
-package com.ossant.dao;
+package com.ossant.dao.jdbc;
 
+import com.ossant.dao.BookDao;
 import com.ossant.domain.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ComponentScan(basePackages = {"com.ossant.dao"})
+@ComponentScan(basePackages = {"com.ossant.dao.jdbc"})
 public class BookDaoJDBCTemplateTest {
 
     @Autowired
