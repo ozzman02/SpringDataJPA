@@ -3,6 +3,7 @@ package com.ossant.domain;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 
 @Entity
@@ -53,6 +54,9 @@ public class OrderHeader extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
+    private Set<OrderLine> orderLines;
+
     public String getCustomerName() {
         return customerName;
     }
@@ -85,6 +89,14 @@ public class OrderHeader extends BaseEntity {
         this.orderStatus = orderStatus;
     }
 
+    public Set<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void setOrderLines(Set<OrderLine> orderLines) {
+        this.orderLines = orderLines;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,10 +104,7 @@ public class OrderHeader extends BaseEntity {
         if (!super.equals(o)) return false;
 
         OrderHeader that = (OrderHeader) o;
-        return Objects.equals(customerName, that.customerName)
-                && Objects.equals(shippingAddress, that.shippingAddress)
-                && Objects.equals(billToAddress, that.billToAddress)
-                && orderStatus == that.orderStatus;
+        return Objects.equals(customerName, that.customerName) && Objects.equals(shippingAddress, that.shippingAddress) && Objects.equals(billToAddress, that.billToAddress) && orderStatus == that.orderStatus && Objects.equals(orderLines, that.orderLines);
     }
 
     @Override
@@ -107,5 +116,4 @@ public class OrderHeader extends BaseEntity {
         result = 31 * result + Objects.hashCode(orderStatus);
         return result;
     }
-
 }
