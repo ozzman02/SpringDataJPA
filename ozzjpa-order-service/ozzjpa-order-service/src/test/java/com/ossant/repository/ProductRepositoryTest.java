@@ -17,6 +17,13 @@ public class ProductRepositoryTest {
     ProductRepository productRepository;
 
     @Test
+    void getCategoryTest() {
+        Product product = productRepository.findByDescription("PRODUCT1");
+        assertNotNull(product);
+        assertNotNull(product.getCategories());
+    }
+
+    @Test
     void saveProductTest() {
         Product product = new Product();
         product.setDescription("Test Product Description");

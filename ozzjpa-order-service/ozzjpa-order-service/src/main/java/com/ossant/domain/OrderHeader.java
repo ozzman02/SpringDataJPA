@@ -2,6 +2,7 @@ package com.ossant.domain;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -43,7 +44,8 @@ import java.util.Set;
 })
 public class OrderHeader extends BaseEntity {
 
-    private String customerName;
+    @ManyToOne
+    private Customer customer;
 
     @Embedded
     private Address shippingAddress;
@@ -54,15 +56,35 @@ public class OrderHeader extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "orderHeader", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<OrderLine> orderLines;
 
-    public String getCustomerName() {
-        return customerName;
+    @OneToOne(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private OrderApproval orderApproval;
+
+    public void addOrderLine(OrderLine orderLine) {
+        if (orderLines == null) {
+            orderLines = new HashSet<>();
+        }
+        orderLines.add(orderLine);
+        orderLine.setOrderHeader(this);
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void removeOrderLine(OrderLine orderLine) {
+        if (orderLines != null) {
+            if (!orderLines.isEmpty()) {
+                orderLines.remove(orderLine);
+                orderLine.setOrderHeader(null);
+            }
+        }
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Address getShippingAddress() {
@@ -97,6 +119,15 @@ public class OrderHeader extends BaseEntity {
         this.orderLines = orderLines;
     }
 
+    public OrderApproval getOrderApproval() {
+        return orderApproval;
+    }
+
+    public void setOrderApproval(OrderApproval orderApproval) {
+        this.orderApproval = orderApproval;
+        orderApproval.setOrderHeader(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,13 +135,17 @@ public class OrderHeader extends BaseEntity {
         if (!super.equals(o)) return false;
 
         OrderHeader that = (OrderHeader) o;
-        return Objects.equals(customerName, that.customerName) && Objects.equals(shippingAddress, that.shippingAddress) && Objects.equals(billToAddress, that.billToAddress) && orderStatus == that.orderStatus && Objects.equals(orderLines, that.orderLines);
+        return Objects.equals(customer, that.customer)
+                && Objects.equals(shippingAddress, that.shippingAddress)
+                && Objects.equals(billToAddress, that.billToAddress)
+                && orderStatus == that.orderStatus
+                && Objects.equals(orderLines, that.orderLines);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + Objects.hashCode(customerName);
+        result = 31 * result + Objects.hashCode(customer);
         result = 31 * result + Objects.hashCode(shippingAddress);
         result = 31 * result + Objects.hashCode(billToAddress);
         result = 31 * result + Objects.hashCode(orderStatus);

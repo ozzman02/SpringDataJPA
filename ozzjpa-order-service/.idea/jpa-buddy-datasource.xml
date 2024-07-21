@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpbDataSourceConfig">
+    <data-sources>
+      <data-source id="b358e5d7-0c66-4a42-bc74-1ff39dee5252" name="order_service_db" url="jdbc:mysql://localhost:3306/order_service_db?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC" driverClass="com.mysql.cj.jdbc.Driver" />
+    </data-sources>
+  </component>
+</project>
