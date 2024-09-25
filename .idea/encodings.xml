@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/ozzjpa-hibernate-dao-main/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ozzjpa-intro-liquibase/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ozzjpa-intro-pk-h2-workaround/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ozzjpa-jdbc-template/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ozzjpa-order-service/ozzjpa-order-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ozzjpa-spring-data-jpa-master/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ozzjpa/src/main/java" charset="UTF-8" />
+  </component>
+</project>
