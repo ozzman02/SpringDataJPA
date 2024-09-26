@@ -19,7 +19,7 @@ import java.util.Random;
 /**
  * Created by jt on 5/28/22.
  */
-@ActiveProfiles("local")
+//@ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DataLoadTest {
@@ -38,7 +38,7 @@ public class DataLoadTest {
     @Autowired
     ProductRepository productRepository;
 
-    @Disabled
+    //@Disabled
     @Rollback(value = false)
     @Test
     void testDataLoader() {
