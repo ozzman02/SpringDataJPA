@@ -12,9 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by jt on 5/28/22.
@@ -38,14 +37,35 @@ public class DataLoadTest {
     @Autowired
     ProductRepository productRepository;
 
-    @Disabled
+    @Test
+    void testN_PlusOneProblem() {
+
+        Customer customer = customerRepository
+                .findCustomerByCustomerNameIgnoreCase(TEST_CUSTOMER).orElseGet(null);
+
+        IntSummaryStatistics totalOrdered =  orderHeaderRepository.findAllByCustomer(customer).stream()
+                .flatMap(orderHeader -> orderHeader.getOrderLines().stream())
+                .collect(Collectors.summarizingInt(OrderLine::getQuantityOrdered));
+
+        System.out.println("Total ordered: " + totalOrdered.getSum());
+    }
+
+
+    @Test
+    void testLazy() {
+        OrderHeader orderHeader = orderHeaderRepository.findById(5L).orElseGet(null);
+        System.out.println("Order Id is: " + orderHeader.getId());
+        System.out.println("Customer Name is: " + orderHeader.getCustomer().getCustomerName());
+    }
+
+    //@Disabled
     @Rollback(value = false)
     @Test
     void testDataLoader() {
         List<Product> products = loadProducts();
         Customer customer = loadCustomers();
 
-        int ordersToCreate = 100;
+        int ordersToCreate = 10000;
 
         for (int i = 0; i < ordersToCreate; i++){
             System.out.println("Creating order #: " + i);
@@ -65,7 +85,8 @@ public class DataLoadTest {
             OrderLine orderLine = new OrderLine();
             orderLine.setProduct(product);
             orderLine.setQuantityOrdered(random.nextInt(20));
-            orderHeader.getOrderLines().add(orderLine);
+            //orderHeader.getOrderLines().add(orderLine);
+            orderHeader.addOrderLine(orderLine);
         });
 
         return orderHeaderRepository.save(orderHeader);
