@@ -1,7 +1,8 @@
-package guru.springframework.sdjpaintro.repositories;
+package com.ossant.repositories;
 
-import guru.springframework.sdjpaintro.domain.composite.AuthorEmbedded;
-import guru.springframework.sdjpaintro.domain.composite.NameId;
+
+import com.ossant.domain.composite.AuthorEmbedded;
+import com.ossant.domain.composite.NameId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

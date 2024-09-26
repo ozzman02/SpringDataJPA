@@ -1,7 +1,9 @@
-package guru.springframework.sdjpaintro;
+package com.ossant;
 
-import guru.springframework.sdjpaintro.domain.Book;
-import guru.springframework.sdjpaintro.repositories.BookRepository;
+
+import com.ossant.domain.Book;
+
+import com.ossant.repositories.BookRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
+@ComponentScan(basePackages = {"com.ossant.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class SpringBootJpaTestSlice {
 

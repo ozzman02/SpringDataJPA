@@ -1,6 +1,7 @@
-package guru.springframework.sdjpaintro;
+package com.ossant;
 
-import guru.springframework.sdjpaintro.repositories.BookRepository;
+
+import com.ossant.repositories.BookRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

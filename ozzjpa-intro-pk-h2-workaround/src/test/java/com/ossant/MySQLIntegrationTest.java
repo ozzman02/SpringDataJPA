@@ -1,12 +1,13 @@
-package guru.springframework.sdjpaintro;
+package com.ossant;
 
-import guru.springframework.sdjpaintro.domain.AuthorUuid;
-import guru.springframework.sdjpaintro.domain.BookNatural;
-import guru.springframework.sdjpaintro.domain.BookUuid;
-import guru.springframework.sdjpaintro.domain.composite.AuthorComposite;
-import guru.springframework.sdjpaintro.domain.composite.AuthorEmbedded;
-import guru.springframework.sdjpaintro.domain.composite.NameId;
-import guru.springframework.sdjpaintro.repositories.*;
+
+import com.ossant.domain.AuthorUuid;
+import com.ossant.domain.BookNatural;
+import com.ossant.domain.BookUuid;
+import com.ossant.domain.composite.AuthorComposite;
+import com.ossant.domain.composite.AuthorEmbedded;
+import com.ossant.domain.composite.NameId;
+import com.ossant.repositories.*;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  */
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"guru.springframework.sdjpaintro.bootstrap"})
+@ComponentScan(basePackages = {"com.ossant.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class MySQLIntegrationTest {
 

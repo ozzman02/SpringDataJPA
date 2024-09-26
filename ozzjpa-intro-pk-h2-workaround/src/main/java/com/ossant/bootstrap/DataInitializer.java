@@ -1,12 +1,12 @@
-package guru.springframework.sdjpaintro.bootstrap;
+package com.ossant.bootstrap;
 
-import guru.springframework.sdjpaintro.domain.AuthorUuid;
-import guru.springframework.sdjpaintro.domain.Book;
 
-import guru.springframework.sdjpaintro.domain.BookUuid;
-import guru.springframework.sdjpaintro.repositories.AuthorUuidRepository;
-import guru.springframework.sdjpaintro.repositories.BookRepository;
-import guru.springframework.sdjpaintro.repositories.BookUuidRepository;
+import com.ossant.domain.AuthorUuid;
+import com.ossant.domain.Book;
+import com.ossant.domain.BookUuid;
+import com.ossant.repositories.AuthorUuidRepository;
+import com.ossant.repositories.BookRepository;
+import com.ossant.repositories.BookUuidRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
