@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain;
+package com.ossant.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

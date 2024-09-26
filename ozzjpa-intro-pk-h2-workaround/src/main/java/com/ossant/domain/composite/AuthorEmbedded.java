@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain.composite;
+package com.ossant.domain.composite;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

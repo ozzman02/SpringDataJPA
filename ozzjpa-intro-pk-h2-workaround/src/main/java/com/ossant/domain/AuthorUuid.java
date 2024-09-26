@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.domain;
+package com.ossant.domain;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;

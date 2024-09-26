@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro;
+package com.ossant;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package guru.springframework.sdjpaintro.config;
+package com.ossant.config;
 
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
