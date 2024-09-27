@@ -30,6 +30,12 @@
             <artifactId>flyway-mysql</artifactId>
         </dependency>
 
+        <!--
+            When removing the local profile and booting our application we are going to have an error.
+            Spring Boot will try to run under the default profile which matches the H2 in memory db.
+            The scope is set to test so H2 will be available for our test classes.
+            We are configuring an H2 profile if we want to start the application with H2.
+        -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

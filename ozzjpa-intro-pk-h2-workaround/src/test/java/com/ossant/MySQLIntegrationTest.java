@@ -8,7 +8,6 @@ import com.ossant.domain.composite.AuthorComposite;
 import com.ossant.domain.composite.AuthorEmbedded;
 import com.ossant.domain.composite.NameId;
 import com.ossant.repositories.*;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
