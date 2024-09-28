@@ -2,7 +2,7 @@ package com.ossant.domain;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class OrderHeaderTest {
 
@@ -21,7 +21,7 @@ class OrderHeaderTest {
         orderHeader.setId(1L);
         OrderHeader orderHeader2 = new OrderHeader();
         orderHeader2.setId(3L);
-        assertFalse(orderHeader.equals(orderHeader2));
+        assertNotEquals(orderHeader, orderHeader2);
     }
 
 }

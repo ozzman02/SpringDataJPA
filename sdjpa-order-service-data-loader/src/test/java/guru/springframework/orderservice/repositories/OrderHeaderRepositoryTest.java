@@ -13,7 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ActiveProfiles("local")
+//@ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderHeaderRepositoryTest {

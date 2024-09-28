@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Created by jt on 5/28/22.
  */
-//@ActiveProfiles("local")
+@ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DataLoadTest {
