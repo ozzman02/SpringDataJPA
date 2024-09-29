@@ -4,9 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
-/**
- * Created by jt on 5/21/22.
- */
+
 @Entity
 public class OrderApproval extends BaseEntity {
 

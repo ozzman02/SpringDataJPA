@@ -6,9 +6,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import java.util.Set;
 
-/**
- * Created by jt on 12/15/21.
- */
+
 @Entity
 public class Category extends BaseEntity {
 

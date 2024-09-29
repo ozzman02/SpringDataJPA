@@ -2,9 +2,6 @@ package guru.springframework.orderservice.domain;
 
 import jakarta.persistence.Embeddable;
 
-/**
- * Created by jt on 12/11/21.
- */
 @Embeddable
 public class Address {
     private String address;

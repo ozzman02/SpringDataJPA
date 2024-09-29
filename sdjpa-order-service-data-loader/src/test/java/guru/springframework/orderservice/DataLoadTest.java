@@ -10,15 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
-/**
- * Created by jt on 5/28/22.
- */
-@ActiveProfiles("local")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DataLoadTest {
@@ -36,6 +34,26 @@ public class DataLoadTest {
 
     @Autowired
     ProductRepository productRepository;
+
+    /**
+     * From MySQL Workbench (or other client, run the following SQL statement, then test below.) Once
+     * you commit, the test will complete. If test completes immediately, check autocommit settings in client.
+     *
+     *  {@code SELECT * FROM order_service_db.order_header where id = 1 for update; }
+     */
+    @Test
+    void testDBLock() {
+        Long id = 55l;
+
+        OrderHeader orderHeader = orderHeaderRepository.findById(id).get();
+
+        Address billTo = new Address();
+        billTo.setAddress("Bill me");
+        orderHeader.setBillToAddress(billTo);
+        orderHeaderRepository.saveAndFlush(orderHeader);
+
+        System.out.println("I updated the order");
+    }
 
     @Test
     void testN_PlusOneProblem() {
@@ -58,7 +76,7 @@ public class DataLoadTest {
         System.out.println("Customer Name is: " + orderHeader.getCustomer().getCustomerName());
     }
 
-    //@Disabled
+    @Disabled
     @Rollback(value = false)
     @Test
     void testDataLoader() {
@@ -110,6 +128,7 @@ public class DataLoadTest {
                     return customerRepository.save(c1);
                 });
     }
+
     private List<Product> loadProducts(){
         List<Product> products = new ArrayList<>();
 
@@ -119,6 +138,7 @@ public class DataLoadTest {
 
         return products;
     }
+
     private Product getOrSaveProduct(String description) {
         return productRepository.findByDescription(description)
                 .orElseGet(() -> {

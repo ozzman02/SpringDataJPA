@@ -6,9 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
-/**
- * Created by jt on 12/11/21.
- */
+
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
