@@ -1,20 +1,19 @@
 package guru.springframework.creditcard.domain;
 
 import guru.springframework.creditcard.interceptors.EncryptedString;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 
 @Entity
+//@EntityListeners(CreditCardJPACallback.class)
 public class CreditCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @EncryptedString
+    //@EncryptedString
+    @Convert(converter = CreditCardConverter.class)
     private String creditCardNumber;
 
     private String cvv;
@@ -52,4 +51,10 @@ public class CreditCard {
     public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
+
+    @PrePersist
+    public void prePersistCallback() {
+        System.out.println("JPA PrePersist Callback was called");
+    }
+
 }
