@@ -8,11 +8,11 @@
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>guru.springframework.sdjpa</groupId>
-    <artifactId>sdjpa-wp</artifactId>
+    <groupId>ozzjpa.wp</groupId>
+    <artifactId>ozzjpa-wp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sdjpa-jpa</name>
-    <description>sdjpa-jpa</description>
+    <name>ozzjpa-wp</name>
+    <description>ozzjpa-wp</description>
 
     <properties>
         <java.version>17</java.version>

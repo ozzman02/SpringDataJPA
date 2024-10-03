@@ -1,4 +1,4 @@
-package guru.springframework.sdjpa.wp.domain;
+package ozzjpa.wp.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

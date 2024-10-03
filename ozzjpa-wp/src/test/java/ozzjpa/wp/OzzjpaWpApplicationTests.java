@@ -1,10 +1,10 @@
-package guru.springframework.sdjpa.wp;
+package ozzjpa.wp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SdjpaJpaApplicationTests {
+class OzzjpaWpApplicationTests {
 
     @Test
     void contextLoads() {
