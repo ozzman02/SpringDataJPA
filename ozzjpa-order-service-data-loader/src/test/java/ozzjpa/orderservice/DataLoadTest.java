@@ -1,6 +1,5 @@
 package ozzjpa.orderservice;
 
-import guru.springframework.orderservice.domain.*;
 import ozzjpa.orderservice.domain.*;
 import ozzjpa.orderservice.repositories.CustomerRepository;
 import ozzjpa.orderservice.repositories.OrderHeaderRepository;

@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("local")
 @SpringBootTest
-class SdjpaOrderServiceApplicationTests {
+class OzzjpaOrderServiceApplicationTests {
 
     @Test
     void contextLoads() {
